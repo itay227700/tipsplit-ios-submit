@@ -6,11 +6,14 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Download IPA from release
         run: gh release download v1.0 --pattern "*.ipa" --repo itay227700/tipsplit-ios-submit

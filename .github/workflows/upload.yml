@@ -8,7 +8,7 @@ on:
 
 jobs:
   upload:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -17,8 +17,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
       - name: Install Fastlane
-        run: sudo gem install fastlane -NV
+        run: gem install fastlane -NV
 
       - name: Upload to App Store Connect
         env:
@@ -30,4 +35,5 @@ jobs:
             ipa:"ios-2.121943.2.ipa" \
             skip_metadata:true \
             skip_screenshots:true \
-            submit_for_review:false
+            submit_for_review:false \
+            api_key_path:""

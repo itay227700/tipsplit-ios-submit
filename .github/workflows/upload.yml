@@ -1,6 +1,7 @@
 name: Upload to App Store
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master

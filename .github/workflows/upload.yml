@@ -1,0 +1,29 @@
+name: Upload to App Store
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decode IPA
+        run: |
+          echo "${{ secrets.IPA_BASE64 }}" | base64 --decode > TipSplit.ipa
+
+      - name: Install Fastlane
+        run: sudo gem install fastlane -NV
+
+      - name: Upload to App Store Connect
+        env:
+          APP_STORE_CONNECT_API_KEY_KEY_ID: ${{ secrets.KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_KEY: ${{ secrets.API_KEY_P8 }}
+        run: |
+          fastlane run upload_to_app_store \
+            ipa:"TipSplit.ipa" \
+            skip_metadata:true \
+            skip_screenshots:true \
+            submit_for_review:false
